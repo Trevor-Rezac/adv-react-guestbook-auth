@@ -5,8 +5,6 @@ export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-
-
   return (
     <div>
       <h2>Sign In / Sign Up</h2>
