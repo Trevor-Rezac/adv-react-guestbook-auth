@@ -14,9 +14,9 @@ export default function Auth() {
   const handleSignIn = async (e) => {
     try {
       e.preventDefault();
-    await login(email, password);
-    const url = location.search.from ? location.search.from.pathname : '/';
-    history.replace(url)
+      await login(email, password);
+      const url = location.search.from ? location.search.from.pathname : '/';
+      history.replace(url)
     } catch (error) {
       setError(error.message)
     }
@@ -25,9 +25,9 @@ export default function Auth() {
   const handleSignUp = async (e) => {
     try {
       e.preventDefault();
-    await signUp(email, password);
-    const url = location.search.from ? location.search.from.pathname : '/';
-    history.replace(url)
+      await signUp(email, password);
+      const url = location.search.from ? location.search.from.pathname : '/';
+      history.replace(url)
     } catch (error) {
       setError(error.message)
     }
