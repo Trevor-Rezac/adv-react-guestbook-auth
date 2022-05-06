@@ -1,6 +1,7 @@
 import { Route, Switch } from 'react-router-dom';
 import Home from './views/Home/Home';
 import Auth from './views/Auth/Auth';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 export default function App() {
   return (
@@ -8,9 +9,9 @@ export default function App() {
       <Route exact path='/auth'>
         <Auth />
       </Route>
-      <Route exact path='/'>
+      <PrivateRoute exact path='/'>
         <Home />
-      </Route>
+      </PrivateRoute>
     </Switch>
   );
 }
