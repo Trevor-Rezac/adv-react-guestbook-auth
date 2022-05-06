@@ -15,12 +15,12 @@ export default function Home() {
   
   return (
     <section>
-      <h2>Guest List</h2>
+      <h2>Say something...</h2>
       <form>
-        <input placeholder='Add Guest Name'></input>
+        <input placeholder='add new entry'></input>
         <button>Add</button>
       </form>
-      <p>Current guest list:</p>
+      <p>Recent entries:</p>
       <div>
         {entryList.map((entry) => <Entry key={`${entry.id}`} entry={entry}/>)}
       </div>
