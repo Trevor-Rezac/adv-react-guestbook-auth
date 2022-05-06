@@ -3,6 +3,7 @@ import Home from './views/Home/Home';
 import Auth from './views/Auth/Auth';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import { useUserContext } from '../src/context/UserContext'
+import styles from './App.css'
 
 export default function App() {
   const { user, logout } = useUserContext();
@@ -15,9 +16,11 @@ export default function App() {
   return (<>
       <header>
         {user.email 
-        ? <div>
-            <h2>Hello, {user.email}!</h2>
-            <button onClick={handleLogout}>Logout</button>
+        ? <div className={styles['app-header']}>
+            <h3>Hello, {user.email}!</h3>
+            <button 
+              onClick={handleLogout}
+              className={styles['logout-btn']}>Logout</button>
           </div>
         : <div></div>}
       </header>
