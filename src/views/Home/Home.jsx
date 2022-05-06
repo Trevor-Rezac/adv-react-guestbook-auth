@@ -1,26 +1,50 @@
 import { useEffect, useState } from 'react'
-import { getEntries } from '../../services/entries'
+import { getEntries, createEntry } from '../../services/entries'
 import Entry from '../../components/Entry/Entry';
+import { useUserContext } from '../../context/UserContext';
 
 export default function Home() {
+  const { user } = useUserContext();
   const [entryList, setEntryList] = useState([]);
+  const [content, setContent] = useState('');
+  console.log('user.id~~~~', user.id)
+  
+  const fetchEntryList = async () => {
+    const res = await getEntries();
+    setEntryList(res);
+  }
   
   useEffect(() => {
-    const fetchEntryList = async () => {
-      const res = await getEntries();
-      setEntryList(res);
-    }
     fetchEntryList()
   }, [])
+
+  const handleChange = async (e) => {
+    e.preventDefault();
+    setContent(e.target.value)
+  }
+
+  const addEntry = async () => {
+    const res = await createEntry({ userId: user.id, content })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await addEntry();
+    await fetchEntryList();
+  }
   
   return (
     <section>
       <h2>Say something...</h2>
-      <form>
-        <input placeholder='add new entry'></input>
+      <form onSubmit={handleSubmit}>
+        <input 
+          placeholder='add new entry'
+          onChange={handleChange}
+          value={content}
+          />
         <button>Add</button>
       </form>
-      <p>Recent entries:</p>
+      <h3>Recent entries:</h3>
       <div>
         {entryList.map((entry) => <Entry key={`${entry.id}`} entry={entry}/>)}
       </div>

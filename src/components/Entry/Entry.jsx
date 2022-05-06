@@ -7,9 +7,9 @@ export default function Entry({ entry }) {
 
   return (
     <div>
-      <h4>{entry.content}</h4>
-      <p>{user.email}</p>
-      <p>{timestamp}</p>
+      <h4>"{entry.content}"</h4>
+      <p>by: {user.email}</p>
+      <p>on {timestamp}</p>
     </div>
   )
 }
