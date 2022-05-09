@@ -58,9 +58,10 @@ describe('EntryList tests', () => {
     const addBtn = screen.getByRole('button', { name: 'Add'});
     
     server.use(
+      //mocks the user's post request  to add a new entry
       rest.post(`${process.env.SUPABASE_API_URL}/rest/v1/entries`, (req, res, ctx) => res(ctx.json(mockedNewEntry))),
 
-
+      //mocks the get request showing the updated entry list containing the new entry
       rest.get(`${process.env.SUPABASE_API_URL}/rest/v1/entries`, (req, res, ctx) => res(ctx.json([{
         id: '1',
         content: 'hello there!',
@@ -82,12 +83,18 @@ describe('EntryList tests', () => {
       ])))
     )
     
+    //user clicks the add button to add new entry
     userEvent.click(addBtn);
     
+    //wait for the entry list to update after the user interaction
+    //updated entry list should have 3 entries
+    //tests that the dom includes an entry containing "hello world!"
     await waitFor(() => {
       const updatedEntryListArr = screen.getAllByRole('heading', { level: 4 })
-            
-    expect(updatedEntryListArr.length).toEqual(3);
+      expect(updatedEntryListArr.length).toEqual(3);
+
+      const newEntry = screen.getByText(/hello world!/i);
+      expect(newEntry).toBeInTheDocument();
     })
     
   })
