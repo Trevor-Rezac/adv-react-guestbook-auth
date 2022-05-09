@@ -32,7 +32,7 @@ export default function EntryList() {
     await addEntry();
     await fetchEntryList();
   }
-
+  
   return (
     <div>
       <form onSubmit={handleSubmit}>
