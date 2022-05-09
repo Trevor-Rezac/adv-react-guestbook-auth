@@ -84,7 +84,7 @@ describe('EntryList tests', () => {
     
     userEvent.click(addBtn);
     
-    waitFor(() => {
+    await waitFor(() => {
       const updatedEntryListArr = screen.getAllByRole('heading', { level: 4 })
             
     expect(updatedEntryListArr.length).toEqual(3);
