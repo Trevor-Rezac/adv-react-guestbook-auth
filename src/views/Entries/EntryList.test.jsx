@@ -1,11 +1,15 @@
-import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { UserProvider } from '../../context/UserContext';
 import App from '../../App';
+import { mockedEntryList, mockedNewEntry } from '../../fixtures/mockData';
+import { server } from '../../setupTests';
+import { rest } from 'msw';
+
 
 describe('EntryList tests', () => {
-  it('should test a user adding a new entry', async () => {
+  it('should test a user logging in and adding a new entry', async () => {
     render(
       <MemoryRouter>
         <UserProvider>
@@ -36,9 +40,55 @@ describe('EntryList tests', () => {
     await screen.findByRole('heading', { 
       name: 'Say something...' 
     });
+    
+    //tests that the entryInput renders
+    const entryInput = screen.getByPlaceholderText(/add new entry/i);
 
-    screen.debug();
+    //tests that the current Entry list renders with two entries 
+    //(each entry has an h4 header role)
+    expect(entryInput).toBeInTheDocument();
+    
+    const entryListArr = await screen.findAllByRole('heading', { level: 4 })
+    expect(entryListArr.length).toEqual(2);
+    
+    //the user types a new entry into the input
+    userEvent.type(entryInput, 'hello world!');
+    
+    //tests that the user can click the add button
+    const addBtn = screen.getByRole('button', { name: 'Add'});
+    
+    server.use(
+      rest.post(`${process.env.SUPABASE_API_URL}/rest/v1/entries`, (req, res, ctx) => res(ctx.json(mockedNewEntry))),
 
+
+      rest.get(`${process.env.SUPABASE_API_URL}/rest/v1/entries`, (req, res, ctx) => res(ctx.json([{
+        id: '1',
+        content: 'hello there!',
+        user: 'trev@test.com',
+        timestamp: 'Fri May 09 2022',
+      },
+      {
+        id: '2',
+        content: 'howdy partner!',
+        user: 'trev@test.com',
+        timestamp: 'Fri May 09 2022',
+      },
+      {
+        id: '3',
+        content: 'hello world!',
+        user: 'trev@test.com',
+        timestamp: 'Fri May 09 2022',
+      }
+      ])))
+    )
+    
+    userEvent.click(addBtn);
+    
+    waitFor(() => {
+      const updatedEntryListArr = screen.getAllByRole('heading', { level: 4 })
+            
+    expect(updatedEntryListArr.length).toEqual(3);
+    })
     
   })
 })

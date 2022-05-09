@@ -35,4 +35,26 @@ const mockedToken = {
   },
 };
 
-module.exports = { mockedToken };
+const mockedNewEntry = {
+  id: '3',
+  content: 'hello world!',
+  user: 'trev@test.com',
+  timestamp: 'Fri May 09 2022',
+};
+
+const mockedEntryList = [
+  {
+    id: '1',
+    content: 'hello there!',
+    user: 'trev@test.com',
+    timestamp: 'Fri May 09 2022',
+  },
+  {
+    id: '2',
+    content: 'howdy partner!',
+    user: 'trev@test.com',
+    timestamp: 'Fri May 09 2022',
+  },
+];
+
+module.exports = { mockedToken, mockedEntryList, mockedNewEntry };
